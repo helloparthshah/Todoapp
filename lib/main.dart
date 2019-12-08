@@ -1,5 +1,6 @@
 import 'package:todo/UI/Intray/intray_page.dart';
 import 'package:flutter/material.dart';
+import 'package:todo/UI/intray/test.dart';
 import 'models/globals.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -53,10 +54,11 @@ Widget getHomePage(){
           children:<Widget>[
               TabBarView(
               children: [
+                new Test(),
                 new IntrayPage(),
-                new Container(
+                /* new Container(
                   color: Colors.orange,
-                  ),
+                  ), */
                 new Container(
                   color: Colors.lightGreen,
                 ),

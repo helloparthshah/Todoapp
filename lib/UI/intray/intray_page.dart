@@ -33,7 +33,7 @@ class _IntrayPageState extends State<IntrayPage> {
       );
     }); */
     return Container(
-      color: darkGreyColor,
+      color: Colors.orange,
       child: _buildReorderable(context)
     );
   }
