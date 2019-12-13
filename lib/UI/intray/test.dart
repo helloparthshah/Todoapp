@@ -20,10 +20,16 @@ class _TestState extends State<Test> {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
           case ConnectionState.waiting:
-            return new Text('loading...');
+            return new Center(
+              child: new CircularProgressIndicator(),
+            );
           default:
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
+              else if(snapshot.data==null)
+              {
+                return new CircularProgressIndicator();
+              }
             else{
               getList();
               return createListView(context, snapshot);
@@ -40,7 +46,7 @@ class _TestState extends State<Test> {
 
 var taskList = new List<Task>();
 
-Future readdTask() async{
+void readdTask(List<Task> taskList){
   for(int i=1;i<=taskList.length;i++){
   databaseReference.once().then((DataSnapshot snapshot) {
     databaseReference.child("$i").set({
@@ -64,7 +70,8 @@ Future readdTask() async{
 }
 
   Future<List<Task>> _getData() async {
-    readdTask();
+/*     getList(); */
+    readdTask(taskList);
     getList();
 
     await new Future.delayed(new Duration(seconds: 1));
@@ -76,10 +83,11 @@ Widget _buildListTile(BuildContext context,Task item){
       key: Key(item.taskid),
       onDismissed: (direction){
         setState(() {
-          taskList.removeAt(int.parse(item.taskid)-2);
-          readdTask();
-          databaseReference.child((taskList.length+1).toString()).remove();
-          readdTask();
+          taskList.removeAt(int.parse(item.taskid)-1);
+          readdTask(taskList);
+          getList();
+          databaseReference.child((taskList.length).toString()).remove();
+          getList();
         });
         Scaffold
         .of(context)
@@ -92,7 +100,7 @@ Widget _buildListTile(BuildContext context,Task item){
     );
   }
 
-Widget _buildReorderable(BuildContext context){
+Widget _buildReorderable(BuildContext context) {
     return Theme(
       data: ThemeData(canvasColor: Colors.transparent),
       child: ReorderableListView(
@@ -106,8 +114,8 @@ Widget _buildReorderable(BuildContext context){
                 Task item =taskList[oldIndex];
                 taskList.remove(item);
                 taskList.insert(newIndex, item);
-                /* readdTask();
-                _getData(); */
+                readdTask(taskList);
+                build(context);
           });
         },
       ),
