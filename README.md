@@ -1,6 +1,6 @@
-# todo
+# Todo
 
-A new Flutter project.
+App to create and manage a todo list.
 
 ## Getting Started
 
