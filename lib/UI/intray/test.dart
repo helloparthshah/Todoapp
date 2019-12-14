@@ -4,6 +4,7 @@ import 'package:todo/models/classes/task.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 final databaseReference = FirebaseDatabase.instance.reference();
+var taskList = new List<Task>();
 
 class Test extends StatefulWidget {
   @override
@@ -44,9 +45,7 @@ class _TestState extends State<Test> {
     );
   }
 
-var taskList = new List<Task>();
-
-void readdTask(List<Task> taskList){
+void readdTask(){
   for(int i=1;i<=taskList.length;i++){
   databaseReference.once().then((DataSnapshot snapshot) {
     databaseReference.child("$i").set({
@@ -70,8 +69,7 @@ void readdTask(List<Task> taskList){
 }
 
   Future<List<Task>> _getData() async {
-/*     getList(); */
-    readdTask(taskList);
+    readdTask();
     getList();
 
     await new Future.delayed(new Duration(seconds: 1));
@@ -84,7 +82,7 @@ Widget _buildListTile(BuildContext context,Task item){
       onDismissed: (direction){
         setState(() {
           taskList.removeAt(int.parse(item.taskid)-1);
-          readdTask(taskList);
+          readdTask();
           getList();
           databaseReference.child((taskList.length).toString()).remove();
           getList();
@@ -114,9 +112,8 @@ Widget _buildReorderable(BuildContext context) {
                 Task item =taskList[oldIndex];
                 taskList.remove(item);
                 taskList.insert(newIndex, item);
-                readdTask(taskList);
-                build(context);
           });
+          readdTask();
         },
       ),
     );
