@@ -27,9 +27,11 @@ class _TestState extends State<Test> {
           default:
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
-              else if(snapshot.data==null)
+              else if(taskList.length==0)
               {
-                return new CircularProgressIndicator();
+                return new Center(
+                  child: new CircularProgressIndicator(),
+                );
               }
             else{
               getList();
@@ -69,15 +71,13 @@ void readdTask(){
 }
 
   Future<List<Task>> _getData() async {
-    readdTask();
     getList();
-
-    await new Future.delayed(new Duration(seconds: 1));
+    await new Future.delayed(new Duration(seconds: 0));
     return taskList;
   }
 
 Widget _buildListTile(BuildContext context,Task item){
-    return Dismissible(
+    /* return Dismissible(
       key: Key(item.taskid),
       onDismissed: (direction){
         setState(() {
@@ -90,12 +90,12 @@ Widget _buildListTile(BuildContext context,Task item){
         Scaffold
         .of(context)
         .showSnackBar(SnackBar(content: Text("${item.title} dismissed")));
-      },
-    child:ListTile(
-      // key: Key(item.taskid),
+      }, */
+    return ListTile(
+      key: Key(item.taskid),
       title: new IntrayTodo(title: item.title,note: item.note,),
-    )
     );
+    /* ); */
   }
 
 Widget _buildReorderable(BuildContext context) {
@@ -114,6 +114,9 @@ Widget _buildReorderable(BuildContext context) {
                 taskList.insert(newIndex, item);
           });
           readdTask();
+          build(context);
+          /* readdTask();
+          getList(); */
         },
       ),
     );

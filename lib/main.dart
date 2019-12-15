@@ -48,7 +48,7 @@ Widget getHomePage(){
       color: Colors.yellow,
       home: SafeArea(
       child: DefaultTabController(
-        length: 3,
+        length: 2,
         child: new Scaffold(
           body: Stack(
           children:<Widget>[
@@ -56,12 +56,6 @@ Widget getHomePage(){
               children: [
                 new Test(),
                 new IntrayPage(),
-                /* new Container(
-                  color: Colors.orange,
-                  ), */
-                new Container(
-                  color: Colors.lightGreen,
-                ),
               ],
             ),
             Container(
@@ -100,9 +94,6 @@ Widget getHomePage(){
               tabs: [
                 Tab(
                   icon: new Icon(Icons.home),
-                ),
-                Tab(
-                  icon: new Icon(Icons.rss_feed),
                 ),
                 Tab(
                   icon: new Icon(Icons.perm_identity),
